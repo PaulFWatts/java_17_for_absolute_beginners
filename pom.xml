@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.apress.bgn</groupId>
+    <artifactId>java-17-for-absolute-beginners</artifactId>
+    <name>Java for Absolute Beginners, 2nd edition</name>
+    <description> This project is designed to gradually introduce you to the Java language syntax and the proper way to design solutions using it. The syntax used contains elements from the beginning to version 17 of Java.</description>
+    <version>2.0-SNAPSHOT</version>
+    <url>https://www.apress.com/gp/book/9781484270790</url>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!--  Java version-->
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- plugin versions -->
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+        <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
+        <maven.project-info.plugin.version>3.1.2</maven.project-info.plugin.version>
+        <maven.javadoc.plugin.version>3.3.1</maven.javadoc.plugin.version>
+        <maven.jxr.plugin.version>3.1.1</maven.jxr.plugin.version>
+        <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
+        <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
+        <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
+
+        <!-- dependencies -->
+        <jupiter.junit.version>5.8.1</jupiter.junit.version>
+        <jackson.version>2.12.4</jackson.version>
+        <log4j.version>2.14.1</log4j.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>chapter00</module>
+                <module>chapter01</module>
+                <module>chapter02</module>
+                <module>chapter03</module>
+                <module>chapter04</module>
+                <module>chapter05</module>
+                <module>chapter06</module>
+                <module>chapter07</module>
+                <module>chapter08</module>
+                <module>chapter09</module>
+                <module>chapter10</module>
+                <module>chapter11</module>
+                <module>chapter12</module>
+                <module>chapter13</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- This profile was introduced to only include module that a site can be generated for. -->
+            <id>docs</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>chapter00</module>
+                <module>chapter01</module>
+                <module>chapter02</module>
+                <module>chapter03</module>
+                <module>chapter04</module>
+                <module>chapter05</module>
+                <module>chapter06</module>
+                <module>chapter07</module>
+                <module>chapter08</module>
+                <module>chapter09</module>
+                <!-- maven-javadoc-plugin  has trouble generating Javadoc for projects packaged as a war -->
+                <!--<module>chapter10</module> -->
+                <module>chapter11</module>
+                <module>chapter12</module>
+                <module>chapter13</module>
+            </modules>
+        </profile>
+    </profiles>
+
+    <build>
+        <!-- <defaultGoal>clean install site site:stage</defaultGoal> -->
+        <!-- <defaultGoal>clean install site site:stage site:run</defaultGoal> -->
+        <defaultGoal>clean install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
+                    <configuration>
+                        <generateReports>true</generateReports>
+                        <generateSitemap>true</generateSitemap>
+                        <inputEncoding>${project.reporting.outputEncoding}</inputEncoding>
+                        <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
+                        <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven.project-info.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- to make sure Maven uses the desired JDK version for everything -->
+                    <release>${maven.compiler.release}</release>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <!-- Build documentation with ./mnnw or  mvn (default goal)-->
+                    <!-- Start server with: ./mvnw site:run or mvn site:run -->
+                    <!-- Starts a Jetty server on port 9000 serving the project documentation-->
+                    <port>9000</port>
+                    <tempWebappDirectory>${basedir}/target/staging</tempWebappDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/staging</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/site/extra</directory>
+                                    <includes>
+                                        <include>*.html</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <!-- Needed to include this in the site report-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <configuration>
+                    <showSuccess>false</showSuccess>
+                    <outputDirectory>${project.build.directory}/site</outputDirectory>
+                    <reportsDirectories>
+                        <reportsDirectories>${project.build.directory}/surefire-reports</reportsDirectories>
+                    </reportsDirectories>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <reports>
+                            <report>aggregate</report>
+                            <report>test-aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <failOnError>false</failOnError>
+                    <doclint>none</doclint>
+                    <additionalOptions>-html5</additionalOptions>
+                    <show>public</show>
+                    <quiet>true</quiet>
+                    <doctitle>${project.name}</doctitle>
+                    <inputEncoding>${project.reporting.outputEncoding}</inputEncoding>
+                    <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
+                    <sourceFileExcludes>
+                        <exclude>**/module-info.java</exclude>
+                    </sourceFileExcludes>
+                    <reportSets>
+                        <reportSet>
+                            <id>aggregate</id>
+                            <reports>
+                                <report>aggregate-no-fork</report>
+                                <report>test-aggregate-no-fork</report>
+                            </reports>
+                        </reportSet>
+                        <reportSet>
+                            <id>default</id>
+                            <reports>
+                                <report>javadoc</report>
+                                <report>test-javadoc</report>
+                            </reports>
+                        </reportSet>
+                    </reportSets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <developers>
+        <developer>
+            <name>Iuliana Cosmina</name>
+            <organization>Cloudsoft</organization>
+            <roles>
+                <role>Judge</role>
+                <role>Jury</role>
+                <role>Executioner</role>
+            </roles>
+            <email>Iuliana.Cosmina@gmail.com</email>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <site>
+            <id>${project.artifactId}</id>
+            <url>https://link.springer.com/book/10.1007/978-1-4842-7080-6</url>
+        </site>
+    </distributionManagement>
+
+</project>
